@@ -17,11 +17,11 @@ Quite a bit, it turns out…
 
 ## First approach: Tf-Idf and Linear SVC
 
-Stating business objectives usually involve answers to three of the five W questions: **WHO**, **WHAT**, and **WHEN**. Intuitively good goals will find a way to succinctly answer those questions in a short sentence. However, analyzing the structure of text written for this specific purpose poses a particular challenge for NLP: the *whens* will mostly be dates, the *whats* will include a lot of numbers and named entities and the *whos* will be mostly named entities: teams, company names, organizatons.  
+Stating business objectives usually involves answers to three of the five W questions: **WHO**, **WHAT**, and **WHEN**. Intuitively good goals will find a way to succinctly answer those questions in a short sentence. However, analyzing the structure of text written for this specific purpose poses a particular challenge for NLP: the *whens* will mostly be dates, the *whats* will include a lot of numbers and named entities and the *whos* will be mostly named entities: teams, company names, organizatons.  
 
 NLP tecniques like Tf-Idf would be particularly good at assigning importance to the named entities in the corpus of business objectives, since their frequency on the overall document is low. However, a transformation such as this would inform the classification algorithm about the entities that are most likely to be associated with completed objectives. This is not CrossLead's challenge, as they would like to predict which types of objectives are more thoroghly completed. 
 
-In order to address this, the first task is to perform entity recognition on the corpus to replace these entities with a tag so that the structure of the business objective is preserved, but not the particulars of the team or date in the text. For this I use Spacy's built in entity recognition tool and replace (in the tagged text) all numbers and dates with their entity code. As for particular team names, the ideal thing would be to train a model for entity recognition, but since it would require manual coding, a workaround is to tag the text and replace all proper nouns with a code. So, an example objective would be preprocessed as follows before applying Tf-Idf:
+In order to address this, the first task is to perform entity recognition on the corpus to replace these entities with a tag so that the structure of the business objective is preserved, but not the particulars of the team or date in the text. For this I use Spacy's built in entity recognition tool and replace (in the tagged text) all numbers and dates with their entity code. As for particular team names, the ideal thing would be to train a model for entity recognition, but since it would require manual coding, a workaround is to tag the text and replace all proper nouns with a code. So, a fictitious objective would be preprocessed as follows before applying Tf-Idf:
 
 Original:
 >Identify 8 key business partners for Team Alpha to propose microblogging deal by end of 2016.
@@ -31,3 +31,5 @@ Entities and proper nouns:
 
 Stopwords and lemmatizing:
 >Identify **NUM** key business partner **PROPN** propose microblogging deal **DATE**
+
+After this I apply Tf-Idf to the whole corpus of business objectives. Using this transfomation for text that is so short might seem odd, but 
