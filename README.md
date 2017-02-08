@@ -23,4 +23,11 @@ NLP tecniques like Tf-Idf would be particularly good at assigning importance to 
 
 In order to address this, the first task is to perform entity recognition on the corpus to replace these entities with a tag so that the structure of the business objective is preserved, but not the particulars of the team or date in the text. For this I use Spacy's built in entity recognition tool and replace (in the tagged text) all numbers and dates with their entity code. As for particular team names, the ideal thing would be to train a model for entity recognition, but since it would require manual coding, a workaround is to tag the text and replace all proper nouns with a code. So, an example objective would be preprocessed as follows before applying Tf-Idf:
 
->Identify 8 key business partner for Team Alpha to propose microblogging deal by end of 2016.
+Original:
+>Identify 8 key business partners for Team Alpha to propose microblogging deal by end of 2016.
+
+Entities and proper nouns:
+>Identify **NUM** key business partners for **PROPN** to propose microblogging deal by **DATE**
+
+Stopwords and lemmatizing:
+>Identify **NUM** key business partner **PROPN** propose microblogging deal **DATE**
