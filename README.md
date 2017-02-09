@@ -7,7 +7,9 @@ At Insight, I consulted with [CrossLead](https://www.crosslead.com), an enterpri
 
 CrossLead’s management model uses an Alignment Triangle, in which the company’s vision stands at the top, and then progressively more concrete ways of attaining it are stacked below it in a hierarchy. They currently provide a platform to construct this pyramid by linking the different teams in the company. This structure nudges their clients towards a framework (within their platform) in which smaller, more concrete initiatives are linked to more comprehensive strategies and then to the company’s mission and vision. They also provide a dashboard and some analytics that lets them track the progress of each goal and link the team members responsible for it.
 
-<img src="https://www.dropbox.com/s/k8dyq30tbpfkiih/Screenshot%202017-02-09%2014.58.04.png?raw=1" />
+<p align="center">
+  <img src="https://www.dropbox.com/s/k8dyq30tbpfkiih/Screenshot%202017-02-09%2014.58.04.png?raw=1" />
+</p>
 
 One of Crosslead’s own goals is to expand their analytic capabilities to provide insights to their clients on how to optimize their strategic planning approach. In support of this, they asked me to develop a predictive model for objective completion using the information contained in the description of the objective itself. WHAT WILL it to for them 
 
@@ -43,7 +45,10 @@ Stopwords and lemmatizing:
 
 Once the text has been processed, I use Tf-Idf to vectorize the feature space taking the collection of objective descriptions as a corpus and each individual description as a document. In this case, most of the work is being done by the inverse document frequency component of Tf-Idf, given that short sentences are unlikely to have words repeated more than once (Tf will be 1 for most of the words). While this might seem odd, the feature space produced by this transformation is the best way to find *uniqueness* of the words in the objective description (like in other short text contexts -e.g. finding the relevance of search terms or tweets).
 
-<img src="https://www.dropbox.com/s/v61u51pnwnk3da4/Screenshot%202017-02-09%2014.54.15.png?raw=1" />
+<p align="center">
+  <img src="https://www.dropbox.com/s/v61u51pnwnk3da4/Screenshot%202017-02-09%2014.54.15.png?raw=1" />
+</p>
+
 
 Once the features have been vectorized, the next task is to apply a classification algorithm to predict the class of each objective. The choice of a classifier has to take into account that interpretability is one of the main objectives since we want to be able to construct a style editor from the feature importance analysis. This is the main reason why I chose an SVM classifier (with C=1) with a linear kernel, since it allows me to extract the features (in this case bi-grams and words) with the highest *coefficients* to analyze the words that were most predictive of each particular class. The model achieves an accuracy of 65%. Experimenting with different kernels and doing grid search can boost the accuracy up around 1%, but performing feature importance analysis with non linear transformation is not straightforward given that we do not know the mapping function explicitly. 
 
@@ -53,4 +58,8 @@ The bag of words approach discussed above performs reasonably well (if we were t
 
 As a final source of information, I extract features from CrossLead's database related to the location of the objective within the company structure as well as the skill level (measured by their skill assessment survey) of the person responsible for the objective. 
 
-In order to combine information from the bag of words model and the extra features that I extracted from the data, I use a version of [stacked generalization](http://machine-learning.martinsewell.com/ensembles/stacking/), a method that allows for combining predictions from different sources in order to improve accuracy.  
+In order to combine information from the bag of words model and the extra features that I extracted from the data, I use a version of [stacked generalization](http://machine-learning.martinsewell.com/ensembles/stacking/), a method that allows for combining predictions from different sources in order to improve accuracy. Thus my new model will include as a feature the predictions (on the whole dataset) from the BoW model, as well as the syntactic and skill features that I just mentioned. I train (and test) in the same subset of the data as the previous model a K-Neighbors classifier. This increases my accuracy significantly, classifying correctly 76% of the test set. 
+
+<p align="center">
+  <img src="https://www.dropbox.com/s/1knse409mqqtqoo/Screenshot%202017-02-09%2017.30.28.png?raw=1" />
+</p>
