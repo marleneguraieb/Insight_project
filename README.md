@@ -15,6 +15,10 @@ Management best practices reccommend that companies state their goals in a way t
 
 Quite a bit, it turns out…
 
+## Defining the target
+
+CrossLead has around 7,500 business objectives in their dataset. These objectives all have a description (like the mock one above). Around 1/3 of them have never been updated, roughly 1/3 have been updated, but there has been no progress, and the rest have a level of completion between 0 and 100%. A significant portion of the data accumulates on two values (not updated, and 0% completion), so I will treat this as a classification problem where my target variable is binned into four classes: the ones that are never updated, updated but zero progress, progress up to 50% and progress up to 100%. Doing this I turn to the feature engineering process. 
+
 ## First approach: Tf-Idf and Linear SVC
 
 Stating business objectives usually involves answers to three of the five W questions: **WHO**, **WHAT**, and **WHEN**. Intuitively good goals will find a way to succinctly answer those questions in a short sentence. However, analyzing the structure of text written for this specific purpose poses a particular challenge for NLP: the *whens* will mostly be dates, the *whats* will include a lot of numbers and named entities and the *whos* will be mostly named entities: teams, company names, organizatons.  
@@ -24,12 +28,19 @@ NLP tecniques like Tf-Idf would be particularly good at assigning importance to 
 In order to address this, the first task is to perform entity recognition on the corpus to replace these entities with a tag so that the structure of the business objective is preserved, but not the particulars of the team or date in the text. For this I use Spacy's built in entity recognition tool and replace (in the tagged text) all numbers and dates with their entity code. As for particular team names, the ideal thing would be to train a model for entity recognition, but since it would require manual coding, a workaround is to tag the text and replace all proper nouns with a code. So, a fictitious objective would be preprocessed as follows before applying Tf-Idf:
 
 Original:
+
 >Identify 8 key business partners for Team Alpha to propose microblogging deal by end of 2016.
 
+
 Entities and proper nouns:
+
 >Identify **NUM** key business partners for **PROPN** to propose microblogging deal by **DATE**
 
+
 Stopwords and lemmatizing:
+
 >Identify **NUM** key business partner **PROPN** propose microblogging deal **DATE**
 
-After this I apply Tf-Idf to the whole corpus of business objectives. Using this transfomation for text that is so short might seem odd, but 
+Once the text has been processed, I use Tf-Idf to vectorize the feature space taking the collection of objective descriptions as a corpus and each individual description as a document. In this case, most of the work is being done by the inverse document frequency component of Tf-Idf, given that short sentences are unlikely to have words repeated more than once (Tf will be 1 for most of the words). While this might seem odd, the feature space produced by this transformation is the best way to find *uniqueness* of the words in the objective description (like in other short text contexts -e.g. finding the relevance of search terms or tweets).
+
+Once the features have been vectorized, the next task is to apply a classification algorithm to predict the class that each objective belongs to. 
