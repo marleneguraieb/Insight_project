@@ -76,7 +76,7 @@ The plot below shows the learning rate of a K-neighbors classifier and of a deci
   <img src="https://www.dropbox.com/s/uenkpxu1jym3h7p/Screenshot%202017-02-13%2000.34.18.png?raw=1" />
 </p>
 
-** So, how should we write?
+## So, how should we write?
 
 The model gives some very intuitive predictions. For example, a fictitious objective from 'X-Inc' such as:
 
