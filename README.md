@@ -70,6 +70,28 @@ If we look at the confusion matrix below, we can see that the model performs bes
 
 Given that CrossLead is a relatively new company and they don't have a lot of data, it may be good to see if the model will perform better over time. To do this I compared the learning rates of two algorithms, as well as the dependance on a feature that I created to account for time. 
 
+The plot below shows the learning rate of a K-neighbors classifier and of a decision tree as we vary the sample size. The decision tree classifier (without the time feature) statistically outperforms K-neigbors, although K-neibors grow faster. However, the correlation between time and *objectives* will likely fade away when CrossLead has a larger base of objective and a single company is unlikely to change the composition of the data very much, so it is likely that decision trees will do better as the database grows.  
+
 <p align='center'>
   <img src="https://www.dropbox.com/s/uenkpxu1jym3h7p/Screenshot%202017-02-13%2000.34.18.png?raw=1" />
 </p>
+
+** So, how should we write?
+
+The model gives some very intuitive predictions. For example, a fictitious objective from 'X-Inc' such as:
+
+> Discuss X Inc's project capacity and plans
+
+Would never be updated (the model would predict the label `forgotten`), but suppose that 'X-Inc decided to frame it in a more concrete way, after all, discussing something is never a final end in itself. Suppose then they changed only one word:
+
+> Connect X Inc's project capacity and plans. 
+
+This would be given the label `zero`, the objective has been updated but the user has reported zero progress. If they now changed it to:
+
+> Refine project message to meet capacities and plans
+
+The algorithm would predict it would get progress up to 50% `half or less`. And finally, to make it fall in the `more than half` category:
+
+> Shape functions in project to meet A Incs capacities and plans
+
+Not all of the predictions are as interpretable, but it's good to see a couple of sanity checks.  
