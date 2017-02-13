@@ -58,9 +58,9 @@ The bag of words approach discussed above performs reasonably well (if we were t
 
 As a final source of information, I extract features from CrossLead's database related to the location of the objective within the company structure as well as the skill level (measured by their skill assessment survey) of the person responsible for the objective. 
 
-In order to combine information from the bag of words model and the extra features that I extracted from the data, I use a version of [stacked generalization](http://machine-learning.martinsewell.com/ensembles/stacking/), a method that allows for combining predictions from different sources in order to improve accuracy. Thus my new model will include as a feature the predictions (on the whole dataset) from the BoW model, as well as the syntactic and skill features that I just mentioned. I train (and test) in the same subset of the data as the previous model a decision tree classifier. This increases my accuracy significantly, classifying correctly 76% of the test set after performing a 10-fold cross validated grid search on the parameters.
+In order to combine information from the bag of words model and the extra features that I extracted from the data, I use a version of [stacked generalization](http://machine-learning.martinsewell.com/ensembles/stacking/), a method that allows for combining predictions from different sources in order to improve accuracy. Thus my new model will include as a feature the predictions (on the whole dataset) from the BoW model, as well as the syntactic and skill features that I just mentioned. I train (and test) in the same subset of the data as the previous model a K-Neigbors classifier. This increases my accuracy significantly, classifying correctly 76% of the test set after performing a 10-fold cross validated grid search on the parameters.
 
-
+## How accurate is it?
 
 If we look at the confusion matrix below, we can see that the model performs best when finding objectives that are either `forgotten` or `zero`. The worst performance is in the class `more than half`, in which 60% of the samples are being classified incorrectly. This is partly due to the class imbalance problem (the fourth class is around 15% of the data), and will likely correct itself as CrossLead's platform grows (they are a relatively new company) and data for that class becomes more abundant.
 
@@ -68,3 +68,8 @@ If we look at the confusion matrix below, we can see that the model performs bes
   <img src="https://www.dropbox.com/s/1knse409mqqtqoo/Screenshot%202017-02-09%2017.30.28.png?raw=1" />
 </p>
 
+Given that CrossLead is a relatively new company and they don't have a lot of data, it may be good to see if the model will perform better over time. To do this I compared the learning rates of two algorithms, as well as the dependance on a feature that I created to account for time. 
+
+<p align='center'>
+  <img src="https://www.dropbox.com/s/uenkpxu1jym3h7p/Screenshot%202017-02-13%2000.34.18.png?raw=1" />
+</p>
