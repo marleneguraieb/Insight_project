@@ -1,6 +1,8 @@
 # Write Right!
 ## Helping CrossLead identify successful  business objectives
 
+Watch my [slides](https://docs.google.com/presentation/d/1uPaN-WuReAYp2LgnWXhzgJlLVHGPwB7GhRvLBIjUV9c/pub?start=false&loop=false&delayms=5000)
+
 This post describes my project as a Fellow in Insight Data Science, a program that helps academics make the transition to industry.
 
 At Insight, I consulted with [CrossLead](https://www.crosslead.com), an enterprise SaaS platform that provides a leadership and management system to optimize organizational performance. They help companies organize their business strategies, principles, and goals into a hierarchical structure that helps them track progress and link objectives across different teams and levels of their organization. 
